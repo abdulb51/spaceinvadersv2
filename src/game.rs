@@ -104,6 +104,14 @@ for row in 0..rows {
         player.get_image().draw();
         next_frame().await;
 
+
+
+
+
+
+
+
+        
         //println!("screenhight {}",screen_height());
         // println!("screenwidth {}",screen_width());
     }
