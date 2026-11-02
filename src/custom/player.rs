@@ -51,18 +51,18 @@ impl Player {
 
         if is_key_down(KeyCode::D) || is_key_down(KeyCode::Right) {
             self.move_dir.x += self.speed;
-            self.image.set_angle(0.25);
+            self.image.set_angle(0.15);
         }
         if is_key_down(KeyCode::A) || is_key_down(KeyCode::Left) {
             self.move_dir.x -= self.speed;
-            self.image.set_angle(-0.25);
+            self.image.set_angle(-0.15);
         }
-        if is_key_down(KeyCode::S) || is_key_down(KeyCode::Down) {
-            self.move_dir.y += self.speed;
-        }
-        if is_key_down(KeyCode::W) || is_key_down(KeyCode::Up) {
-            self.move_dir.y -= self.speed;
-        }
+        // if is_key_down(KeyCode::S) || is_key_down(KeyCode::Down) {
+        //     self.move_dir.y += self.speed;
+        // }
+        // if is_key_down(KeyCode::W) || is_key_down(KeyCode::Up) {
+        //     self.move_dir.y -= self.speed;
+        // }
 
         if self.move_dir == vec2(0.0, 0.0) {
             self.image.set_angle(0.0);

@@ -31,9 +31,18 @@ fn window_conf() -> Conf {
     }
 }
 
+
 #[macroquad::main(window_conf)]
 async fn main() {
-
+    
+    
+    let tm = TextureManager::new();
+  tm.preload_with_loading_screen(&
+    ["assets/ship.png",
+  "assets/shipboost.png",
+   "assets/evil.png",
+   "assets/evilb.png"],
+    None, None).await;
 
     
      let tm = TextureManager::new();

@@ -4,7 +4,7 @@ use macroquad::input::KeyCode;
 use macroquad::prelude::*;
 
 pub struct projectile {
-    bullet: StillImage,
+   pub image: StillImage,
     pub move_dir: Vec2,
     pub speed: f32,
 }
@@ -14,30 +14,30 @@ impl projectile {
         let image = StillImage::new(bullet, width, height, x, y, stretch, 1.0).await;
 
         projectile {
-            bullet: image,
+            image: image,
             move_dir: Vec2::new(0.0, 0.0),
             speed: speed,
         }
     }
 
     pub fn draw(&self) {
-        self.bullet.draw();
+        self.image.draw();
     }
+    
+    pub fn image(&self) -> &StillImage {
+            &self.image
+        }
+
 
     pub fn shoot(&mut self) {
-       
-       
-       
         self.move_dir = vec2(0.0, -8.0);
-       
+
         if self.move_dir.length() > 0.0 {
-            
-            self.bullet.set_y(self.bullet.get_y() + self.move_dir.y * self.speed 
-        //* get_frame_time() * 60.0
-        );
-       
-       
-       
+            self.image.set_y(
+                self.image.get_y() + self.move_dir.y * self.speed, //* get_frame_time() * 60.0
+            );
         }
+
+        
     }
 }
