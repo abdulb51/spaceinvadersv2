@@ -21,7 +21,7 @@ use crate::utils::preload_image::TextureManager;
 fn window_conf() -> Conf {
     Conf {
         window_title: "Space Invaders".to_string(),
-        window_width: 580,
+        window_width: 650,
         window_height:920,
         fullscreen: false,
         high_dpi: true,

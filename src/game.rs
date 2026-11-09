@@ -5,6 +5,7 @@ use crate::custom::player::Player;
 use crate::custom::projectile::projectile;
 use crate::ui::still_image::StillImage;
 use crate::ui::text_button::TextButton;
+use crate::ui::grid::draw_grid;
 
 pub async fn run() -> String {
     let btn_exit = TextButton::new(0.0, 0.0, 
@@ -21,10 +22,10 @@ pub async fn run() -> String {
     let mut enemies: Vec<enemy> = Vec::new();
 
 
-let columns = 3;
+let columns = 5;
 let rows = 3;
-let space_x= screen_height() / columns as f32;
-let space_y = screen_height() / rows as f32;
+let space_x= screen_height() / columns as f32 - 20.0;
+let space_y = screen_height() / rows as f32 - 40.0;
 
 for row in 0..rows {
     for column in 0..columns {
@@ -32,8 +33,8 @@ for row in 0..rows {
             "assets/evil.png",
             space_x * column as f32,
             space_y * row as f32,
-            100.0,
-            100.0,
+            65.0,
+            65.0,
             true,
             1.0,
             1.0,
@@ -48,7 +49,12 @@ for row in 0..rows {
 
     loop {
         clear_background(WHITE);
-        
+    draw_grid(50.0, BLACK);
+for enemy in &mut enemies {
+            // enemy.slide();
+            enemy.get_image().draw();
+        }
+
 
         player.keypress();
         player.move_player();
@@ -89,9 +95,9 @@ for row in 0..rows {
                 bullet.image.clear();
                 bullets.remove(bullet_index);
                 continue;
-              
             }
         }
+
 
         if is_key_pressed(KeyCode::R) {
             return "start".to_string();
@@ -112,7 +118,7 @@ for row in 0..rows {
 
 
         
-        //println!("screenhight {}",screen_height());
-        // println!("screenwidth {}",screen_width());
+        println!("screenhight {}",screen_height());
+        println!("screenwidth {}",screen_width());
     }
 }
