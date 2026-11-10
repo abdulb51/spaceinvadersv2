@@ -36,7 +36,7 @@ impl Player {
 
   
 
-    pub fn get_image(&self) -> &StillImage {
+    pub fn image(&self) -> &StillImage {
         &self.image
     }
 

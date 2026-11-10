@@ -1,3 +1,4 @@
+use macroquad::input::KeyCode::X;
 use macroquad::prelude::*;
 
 use crate::custom::enemy::enemy;
@@ -21,6 +22,8 @@ pub async fn run() -> String {
     let mut bullets: Vec<projectile> = Vec::new();
 
     let mut enemies: Vec<enemy> = Vec::new();
+
+
 
 
 let columns = 5;
@@ -57,14 +60,16 @@ for row in 0..rows {
     draw_grid(50.0, BLACK);
 
 
+    
+
+
     for enemy in &mut enemies {
-            enemy.slide();
-            enemy.get_image().draw();
+            enemy.image().draw();
         }
 
         // for enemy_index in (0..enemies.len()).rev() {
-        //     let enemy = &mut enemies[enemy_index];
-            
+        //    let enemy = &mut enemies[enemy_index];
+             
         //      {
         //         enemies.remove(enemy_index);
         //         continue;
@@ -79,8 +84,8 @@ for row in 0..rows {
             
             
             let mut bullet: projectile = projectile::new(
-                player.get_image().get_x(),
-                player.get_image().get_y(),
+                player.image().get_x(),
+                player.image().get_y(),
                 20.0,
                 20.0,
                 "assets/bullet.png",
@@ -105,7 +110,7 @@ for row in 0..rows {
               
                 bullet.shoot();
                 bullet.image().draw();
-
+            
                 if bullet.image().get_y() < -900.0 {
                 bullet.image.clear();
                 bullets.remove(bullet_index);
@@ -113,6 +118,13 @@ for row in 0..rows {
             }
         }
 
+        let collision = check_collision(bullets[0].image(), enemies[0].image(), 1); //Where 1 is the number of pixels to skip
+    if collision {
+        bullets[0].image().clear();
+        enemies[0].image().clear();
+    } else {
+        continue;
+    }
 
         if is_key_pressed(KeyCode::R) {
             return "start".to_string();
@@ -126,18 +138,10 @@ for row in 0..rows {
     return "win".to_string();
 }
 
-        player.get_image().draw();
+        player.image().draw();
         next_frame().await;
-
-
-
-
-
-
-
-
         
-        println!("screenhight {}",screen_height());
-        println!("screenwidth {}",screen_width());
+        // println!("screenhight {}",screen_height());
+        // println!("screenwidth {}",screen_width());
     }
 }

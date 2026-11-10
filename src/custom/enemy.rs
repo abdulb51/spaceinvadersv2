@@ -50,7 +50,7 @@ pub fn slide(&mut self) {
         self.move_dir = vec2(0.0, 1.0);
     }
 
-    pub fn get_image(&self) -> &StillImage {
+    pub fn image(&self) -> &StillImage {
         &self.image
     }
 
