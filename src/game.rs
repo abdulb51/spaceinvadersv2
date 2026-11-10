@@ -6,6 +6,7 @@ use crate::custom::projectile::projectile;
 use crate::ui::still_image::StillImage;
 use crate::ui::text_button::TextButton;
 use crate::ui::grid::draw_grid;
+use crate::utils::collision::check_collision;
 
 pub async fn run() -> String {
     let btn_exit = TextButton::new(0.0, 0.0, 
@@ -24,8 +25,8 @@ pub async fn run() -> String {
 
 let columns = 5;
 let rows = 3;
-let space_x= screen_height() / columns as f32 - 20.0;
-let space_y = screen_height() / rows as f32 - 40.0;
+let space_x=80.0;
+let space_y = 80.0;
 
 for row in 0..rows {
     for column in 0..columns {
@@ -38,6 +39,10 @@ for row in 0..rows {
             true,
             1.0,
             1.0,
+            0.0,
+            screen_height()/1.25,
+            0.0,
+            0.0,
         ).await;
         enemies.push(enemy);
         
@@ -50,12 +55,22 @@ for row in 0..rows {
     loop {
         clear_background(WHITE);
     draw_grid(50.0, BLACK);
-for enemy in &mut enemies {
-            // enemy.slide();
+
+
+    for enemy in &mut enemies {
+            enemy.slide();
             enemy.get_image().draw();
         }
 
-
+        // for enemy_index in (0..enemies.len()).rev() {
+        //     let enemy = &mut enemies[enemy_index];
+            
+        //      {
+        //         enemies.remove(enemy_index);
+        //         continue;
+        //     }
+            
+        // }
         player.keypress();
         player.move_player();
 
@@ -66,8 +81,8 @@ for enemy in &mut enemies {
             let mut bullet: projectile = projectile::new(
                 player.get_image().get_x(),
                 player.get_image().get_y(),
-                100.0,
-                100.0,
+                20.0,
+                20.0,
                 "assets/bullet.png",
                 true,
                 1.0,
@@ -106,6 +121,10 @@ for enemy in &mut enemies {
         if btn_exit.click() {
             return "main".to_string();
         }
+        
+        if enemies.len() == 0 {
+    return "win".to_string();
+}
 
         player.get_image().draw();
         next_frame().await;

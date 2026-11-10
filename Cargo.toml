@@ -6,7 +6,10 @@ edition = "2024"
 [dependencies]
 image = "0.25.10"
 macroquad = "0.4.16"
+rayon = { version = "1.7.0", optional = true }
+
 
 [features]
 scale = []
-default = []
+    default = ["native"]  # Default feature includes "native"
+    native = ["dep:rayon"]    # The "native" feature enables Rayon
