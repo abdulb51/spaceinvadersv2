@@ -53,7 +53,9 @@ pub fn slide(&mut self) {
     pub fn image(&self) -> &StillImage {
         &self.image
     }
-
+pub fn set_x(&mut self, x: f32) {
+        self.image.set_x(x);
+    }
        pub fn get_speed(&self) -> f32 {
         self.speed
     }
@@ -62,5 +64,21 @@ pub fn slide(&mut self) {
         self.image.draw();
     }
 
-  
+    pub fn clear(&mut self) {
+        self.image.clear();
+    }
+
+
+    pub fn get_min_y(&self) -> f32 {
+        self.min_y
+    }
+    pub fn get_max_y(&self) -> f32 {
+        self.max_y
+    }
+    pub fn get_min_x(&self) -> f32 {
+       self.min_x
+}
+pub fn get_max_x(&self) -> f32 {
+        self.max_x
+    }
 }

@@ -28,6 +28,14 @@ impl projectile {
             &self.image
         }
 
+     
+     
+pub fn clear(&mut self) {
+self.image.clear();
+        }
+
+
+
 
     pub fn shoot(&mut self) {
         self.move_dir = vec2(0.0, -8.0);
@@ -38,6 +46,6 @@ impl projectile {
             );
         }
 
-        
-    }
+
+}
 }
