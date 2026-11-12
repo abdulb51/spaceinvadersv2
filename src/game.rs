@@ -5,16 +5,17 @@ use crate::custom::enemy::enemy;
 use crate::custom::player::Player;
 use crate::custom::projectile::projectile;
 use crate::ui::grid::draw_grid;
-use crate::ui::still_image::StillImage;
 use crate::ui::text_button::TextButton;
 use crate::utils::collision::check_collision;
 use crate::utils::preload_image::TextureManager;
+use crate::ui::animated_image::AnimatedImage;
+use crate::ui::still_image::StillImage;
 
 pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, TextureManager, i32, i32) {
     let btn_exit = TextButton::new(0.0, 0.0, 50.0, 50.0, "X", RED, BLACK, 50);
 
     let mut player = Player::new(
-        tm.get_preload("assets/ship.png").unwrap(),
+        "assets/ship.png",
         290.0,
         800.0,
         100.0,
@@ -25,6 +26,10 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
         5.0,
     )
     .await;
+
+
+
+
     let mut bullets: Vec<projectile> = Vec::new();
 
     let mut enemies: Vec<enemy> = Vec::new();
