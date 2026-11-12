@@ -10,23 +10,21 @@ use crate::ui::text_button::TextButton;
 use crate::utils::collision::check_collision;
 use crate::utils::preload_image::TextureManager;
 
-
-pub async fn run(tm: TextureManager, r_score: i32, h_score: i32) -> (String, TextureManager, i32, i32,) {
-    
-    
+pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, TextureManager, i32, i32) {
     let btn_exit = TextButton::new(0.0, 0.0, 50.0, 50.0, "X", RED, BLACK, 50);
 
-    let mut player = Player::new
-     (tm.get_preload("assets/ship.png").unwrap(),
-     290.0,
-      800.0,
-       100.0,
+    let mut player = Player::new(
+        tm.get_preload("assets/ship.png").unwrap(),
+        290.0,
+        800.0,
         100.0,
-         true,
-          1.0,
-           1.0,
-            5.0).await;
-
+        100.0,
+        true,
+        1.0,
+        1.0,
+        5.0,
+    )
+    .await;
     let mut bullets: Vec<projectile> = Vec::new();
 
     let mut enemies: Vec<enemy> = Vec::new();
@@ -138,15 +136,15 @@ pub async fn run(tm: TextureManager, r_score: i32, h_score: i32) -> (String, Tex
         }
 
         if is_key_pressed(KeyCode::R) {
-            return ("start".to_string(), tm, r_score, h_score);
+            return ("start".to_string(), tm, s_score, h_score);
         }
 
         if btn_exit.click() {
-            return ("main".to_string(), tm, r_score, h_score);
+            return ("main".to_string(), tm, s_score, h_score);
         }
 
         if enemies.len() == 0 {
-            return ("win".to_string(), tm, r_score, h_score);
+            return ("win".to_string(), tm, s_score, h_score);
         }
 
         player.image().draw();

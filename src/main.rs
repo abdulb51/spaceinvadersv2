@@ -37,8 +37,7 @@ fn window_conf() -> Conf {
 async fn main() {
     
     
-    let tm = TextureManager::new();
-
+    let mut tm = TextureManager::new();
   tm.preload_with_loading_screen(&
     ["assets/ship.png",
   "assets/shipboost.png",
@@ -49,7 +48,7 @@ async fn main() {
    ],
     None, None).await;
 
-    let mut r_score = 0;
+    let mut s_score = 0;
     let mut h_score = 0;
 
     
@@ -60,11 +59,11 @@ async fn main() {
 
     loop {
         if get_time() - last_switch > 0.01 {
-            current_screen = match current_screen.as_str() {
-                "start" => start::run(tm, r_score, h_score).await,
-                "game" => game::run(tm, r_score, h_score).await,
-                "win" => win::run(tm, r_score, h_score).await,
-                "lose" => lose::run(tm, r_score, h_score).await,
+           (current_screen, tm, s_score, h_score)  = match current_screen.as_str() {
+                "start" => start::run(tm, s_score, h_score).await,
+                "game" => game::run(tm, s_score, h_score).await,
+                "win" => win::run(tm, s_score, h_score).await,
+                "lose" => lose::run(tm, s_score, h_score).await,
                 _ => break,
             };
             last_switch = get_time();
