@@ -7,12 +7,25 @@ use crate::custom::projectile::projectile;
 use crate::ui::grid::draw_grid;
 use crate::ui::still_image::StillImage;
 use crate::ui::text_button::TextButton;
-use crate::utils::collision::{self, check_collision};
+use crate::utils::collision::check_collision;
+use crate::utils::preload_image::TextureManager;
 
-pub async fn run() -> String {
+
+pub async fn run(tm: TextureManager, r_score: i32, h_score: i32) -> (String, TextureManager, i32, i32,) {
+    
+    
     let btn_exit = TextButton::new(0.0, 0.0, 50.0, 50.0, "X", RED, BLACK, 50);
 
-    let mut player = Player::new("assets/ship.png", 290.0, 800.0, 100.0, 100.0, true, 1.0, 1.0, 5.0).await;
+    let mut player = Player::new
+     (tm.get_preload("assets/ship.png").unwrap(),
+     290.0,
+      800.0,
+       100.0,
+        100.0,
+         true,
+          1.0,
+           1.0,
+            5.0).await;
 
     let mut bullets: Vec<projectile> = Vec::new();
 
@@ -34,15 +47,19 @@ pub async fn run() -> String {
                 true,
                 1.0,
                 1.0,
-                0.0,
-                screen_height() / 1.25,
-                0.0,
-                750.0,
+                // 0.0,
+                // screen_height() / 1.25,
+                // 0.0,
+                // 750.0,
             )
             .await;
             enemies.push(enemy);
         }
     }
+
+    let mut min_x = 0.0;
+    let mut max_x = 750.0;
+    let mut max_y = screen_height() / 1.25;
 
     let mut cooldown = 0.0;
 
@@ -51,16 +68,13 @@ pub async fn run() -> String {
         draw_grid(50.0, BLACK);
 
         for enemy in 0..enemies.len() {
-            if enemies[enemy].image().get_x() >= enemies[enemy].get_max_x() {
-                let max_x = enemies[enemy].get_max_x();
+            if enemies[enemy].image().get_x() <= max_x {
                 let move_dir = vec2(1.0, 0.0);
                 println!("max_x: {}", max_x);
                 let temp = enemies[enemy].image().get_x() + move_dir.x * enemies[enemy].get_speed();
                 enemies[enemy].set_x(temp);
-            } 
-            
-            else if enemies[enemy].image().get_x() == enemies[enemy].get_max_x() {
-                let max_x = enemies[enemy].get_max_x();
+            } else if enemies[enemy].image().get_x() == max_x {
+                let max_x = max_x;
                 let move_dir = vec2(-1.0, 0.0);
                 println!("max_x: {}", max_x);
                 let temp = enemies[enemy].image().get_x() + move_dir.x * enemies[enemy].get_speed();
@@ -124,15 +138,15 @@ pub async fn run() -> String {
         }
 
         if is_key_pressed(KeyCode::R) {
-            return "start".to_string();
+            return ("start".to_string(), tm, r_score, h_score);
         }
 
         if btn_exit.click() {
-            return "main".to_string();
+            return ("main".to_string(), tm, r_score, h_score);
         }
 
         if enemies.len() == 0 {
-            return "win".to_string();
+            return ("win".to_string(), tm, r_score, h_score);
         }
 
         player.image().draw();

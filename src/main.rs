@@ -14,14 +14,15 @@ mod win;
 mod lose;
 
 
+
 use macroquad::prelude::*;
 use crate::utils::preload_image::TextureManager;
-
+use crate::ui::animated_image::AnimatedImage;
 /// Set up window settings before the app runs
 fn window_conf() -> Conf {
     Conf {
         window_title: "Space Invaders".to_string(),
-        window_width: 650,
+        window_width: 920,
         window_height:920,
         fullscreen: false,
         high_dpi: true,
@@ -37,14 +38,19 @@ async fn main() {
     
     
     let tm = TextureManager::new();
+
   tm.preload_with_loading_screen(&
     ["assets/ship.png",
   "assets/shipboost.png",
    "assets/evil.png",
-   "assets/evilb.png"],
+   "assets/evilb.png", 
+   "assets/bullet.png",
+   "assets/bg.gif"
+   ],
     None, None).await;
 
-    
+    let mut r_score = 0;
+    let mut h_score = 0;
 
     
     let mut current_screen = "start".to_string();
@@ -55,10 +61,10 @@ async fn main() {
     loop {
         if get_time() - last_switch > 0.01 {
             current_screen = match current_screen.as_str() {
-                "start" => start::run().await,
-                "game" => game::run().await,
-                "win" => win::run().await,
-                "lose" => lose::run().await,
+                "start" => start::run(tm, r_score, h_score).await,
+                "game" => game::run(tm, r_score, h_score).await,
+                "win" => win::run(tm, r_score, h_score).await,
+                "lose" => lose::run(tm, r_score, h_score).await,
                 _ => break,
             };
             last_switch = get_time();
