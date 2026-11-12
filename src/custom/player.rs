@@ -3,7 +3,7 @@ use macroquad::input::KeyCode;
 use macroquad::prelude::*;
 
 pub struct Player {
-    image: StillImage,
+   pub image: StillImage,
     pub speed: f32,
     pub move_dir: Vec2,
     pub old_pos: Vec2,
@@ -12,7 +12,7 @@ pub struct Player {
 
 impl Player {
     pub async fn new(
-        image: &str,
+        image:(Texture2D,Option<Vec<u8>>,String),
         x: f32,
         y: f32,
         width: f32,
@@ -22,7 +22,7 @@ impl Player {
         speed: f32,
         health: f32,
     ) -> Self {
-        let image = StillImage::new(image, width, height, x, y, stretch, zoom).await;
+        let image =  StillImage::from_preload(image, width, height, x, y, stretch, zoom);
   
 
         Player {

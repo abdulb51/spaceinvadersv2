@@ -10,8 +10,8 @@ pub struct projectile {
 }
 
 impl projectile {
-    pub async fn new(x: f32, y: f32, width: f32, height: f32, bullet: &str, stretch: bool, zoom: f32, speed: f32) -> Self {
-        let image = StillImage::new(bullet, width, height, x, y, stretch, 1.0).await;
+    pub async fn new(x: f32, y: f32, width: f32, height: f32, image: (Texture2D,Option<Vec<u8>>,String), stretch: bool, zoom: f32, speed: f32) -> Self {
+        let image = StillImage::from_preload(image, width, height, x, y, stretch, 1.0);
 
         projectile {
             image: image,

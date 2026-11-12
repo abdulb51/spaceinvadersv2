@@ -39,25 +39,26 @@ async fn main() {
     
     let mut tm = TextureManager::new();
 
- let all_files = vec! ["assets/ship.png",
+ let all_files = vec! [
+    "assets/ship.png",
   "assets/shipboost.png",
    "assets/evil.png",
    "assets/evilb.png", 
    "assets/bullet.png",
-//    "assets/bg.gif"
+    "assets/bg.gif"
    ];
    tm.preload_with_loading_screen(&all_files, None, None).await;
 
 
 //   tm.preload_with_loading_screen(&
-//     ["assets/ship.png",
+    // ["assets/ship.png",
 //   "assets/shipboost.png",
 //    "assets/evil.png",
 //    "assets/evilb.png", 
 //    "assets/bullet.png",
 //    "assets/bg.gif"
 //    ],
-//     None, None).await;
+    // None, None).await;
 
     let mut s_score = 0;
     let mut h_score = 0;

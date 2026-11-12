@@ -3,7 +3,7 @@ use macroquad::input::KeyCode;
 use macroquad::prelude::*;
 
 pub struct enemy {
-    image: StillImage,
+    pub image: StillImage,
     pub speed: f32,
     pub move_dir: Vec2,
    
@@ -12,7 +12,7 @@ pub struct enemy {
 
 impl enemy {
     pub async fn new(
-        image: &str,
+        image: (Texture2D,Option<Vec<u8>>,String),
         x: f32,
         y: f32,
         width: f32,
@@ -22,7 +22,7 @@ impl enemy {
         speed: f32,
      
     ) -> Self {
-        let image = StillImage::new(image, width, height, x, y, stretch, zoom,).await;
+        let image = StillImage::from_preload(image, width, height, x, y, stretch, zoom,);
   
 
         enemy {
@@ -44,6 +44,9 @@ impl enemy {
     }
 pub fn set_x(&mut self, x: f32) {
         self.image.set_x(x);
+    }
+    pub fn set_y(&mut self, y: f32) {
+        self.image.set_y(y);
     }
        pub fn get_speed(&self) -> f32 {
         self.speed

@@ -1,3 +1,4 @@
+
 use macroquad::input::KeyCode::X;
 use macroquad::prelude::*;
 
@@ -14,8 +15,10 @@ use crate::ui::still_image::StillImage;
 pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, TextureManager, i32, i32) {
     let btn_exit = TextButton::new(0.0, 0.0, 50.0, 50.0, "X", RED, BLACK, 50);
 
+
+
     let mut player = Player::new(
-        "assets/ship.png",
+        tm.get_preload("assets/ship.png").unwrap(),  //you ade asset not assets 
         290.0,
         800.0,
         100.0,
@@ -42,7 +45,7 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
     for row in 0..rows {
         for column in 0..columns {
             let enemy = enemy::new(
-                "assets/evil.png",
+                tm.get_preload("assets/evil.png").unwrap(),
                 space_x * column as f32,
                 space_y * row as f32,
                 65.0,
@@ -60,32 +63,40 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
         }
     }
 
-    let mut min_x = 0.0;
-    let mut max_x = 750.0;
-    let mut max_y = screen_height() / 1.25;
+    let min_x = 0.0;
+    let max_x = 750.0;
+    let max_y = screen_height() / 1.25;
 
     let mut cooldown = 0.0;
+    let mut move_dir = 1.0;
 
     loop {
         clear_background(WHITE);
         draw_grid(50.0, BLACK);
-
+let mut jump =false;
         for enemy in 0..enemies.len() {
-            if enemies[enemy].image().get_x() <= max_x {
-                let move_dir = vec2(1.0, 0.0);
-                println!("max_x: {}", max_x);
-                let temp = enemies[enemy].image().get_x() + move_dir.x * enemies[enemy].get_speed();
-                enemies[enemy].set_x(temp);
-            } else if enemies[enemy].image().get_x() == max_x {
-                let max_x = max_x;
-                let move_dir = vec2(-1.0, 0.0);
-                println!("max_x: {}", max_x);
-                let temp = enemies[enemy].image().get_x() + move_dir.x * enemies[enemy].get_speed();
-                enemies[enemy].set_x(temp);
-            }
+            if enemies[enemy].image().get_x() > max_x  {
+                jump=true;
+                move_dir*=-1.0;
+                break;
+            } 
+if enemies[enemy].image().get_x() < min_x  {
+                jump=true;
+                
+                move_dir*=-1.0;
+                break;
+            } 
         }
 
         for enemy in 0..enemies.len() {
+            let temp:f32 = enemies[enemy].image().get_x() + move_dir * enemies[enemy].get_speed();
+            enemies[enemy].set_x(temp);
+            if jump{
+            let temp:f32 = enemies[enemy].image().get_y()+30.0;
+
+                enemies[enemy].set_y(temp);
+            }
+            
             enemies[enemy].image().draw();
         }
 
@@ -100,7 +111,7 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
                 player.image().get_y(),
                 40.0,
                 50.0,
-                "assets/bullet.png",
+                tm.get_preload("assets/bullet.png").unwrap(),
                 true,
                 1.0,
                 1.0,
