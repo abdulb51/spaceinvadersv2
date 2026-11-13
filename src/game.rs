@@ -178,6 +178,10 @@ if enemies.is_empty() {
             // enemies[enemy].set_x(0.0);
             // enemies[enemy].set_y(0.0);
 
+    let columns = 5;
+    let rows = 3;
+    let space_x = 80.0;
+    let space_y = 80.0;
     for row in 0..rows {
         for column in 0..columns {
             let enemy = enemy::new(
@@ -192,8 +196,8 @@ if enemies.is_empty() {
             )
             .await;
             enemies.push(enemy);
-            }
         }
+    }
     }
 
         for enemy in 0..enemies.len() {

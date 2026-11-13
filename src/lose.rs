@@ -37,7 +37,7 @@ pub async fn run (tm: TextureManager, h_score: i32) -> (String, TextureManager, 
        bg.draw();
          draw_text("your highest score was: ", 0.0, 80.0, 30.0, WHITE);
     draw_text("You died! ", 100.0, 40.0, 30.0, WHITE);
-  draw_text("Press R For The Main Menu! ", 0.0, 80.0, 30.0, WHITE);
+  draw_text("Press R For The Main Menu! ", 0.0, 100.0, 30.0, WHITE);
         if is_key_pressed(KeyCode::R) {
  return ("start".to_string(), tm, h_score);
         }
