@@ -12,7 +12,7 @@ mod start;
 mod game;
 mod win;
 mod lose;
-
+mod guide;
 
 
 use macroquad::prelude::*;
@@ -80,6 +80,7 @@ async fn main() {
                 "game" => game::run(tm,h_score).await,
                 "win" => win::run(tm,  h_score).await,
                 "lose" => lose::run(tm,  h_score).await,
+                "guide" => guide::run(tm,  h_score).await,
                 _ => break,
             };
             last_switch = get_time();

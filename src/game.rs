@@ -15,6 +15,7 @@ use crate::utils::preload_image::TextureManager;
 pub async fn run(tm: TextureManager, h_score: i32) -> (String, TextureManager, i32) {
     let btn_exit = TextButton::new(0.0, 0.0, 50.0, 50.0, "X", RED, BLACK, 50);
 
+    
 
     let mut player = Player::new(
         tm.get_preload("assets/ship.png").unwrap(), //you ade asset not assets
@@ -29,10 +30,23 @@ pub async fn run(tm: TextureManager, h_score: i32) -> (String, TextureManager, i
     )
     .await;
    
-   
-    let mut lbl_s_score = Label::new("SCORE: 0 ", 50.0, 100.0, 30);
-let mut s_score = 0;
+    
+    let bg = StillImage::from_preload(
+        tm.get_preload("assets/bg.png").unwrap(),
+        920.0,
+        920.0,
+        0.0,
+        0.0,
+        true,
+        1.0,
+    );
 
+    let mut lbl_s_score = Label::new("SCORE: 0 ", 50.0, 100.0, 30);
+    lbl_s_score.with_colors(WHITE, Some(DARKGRAY));
+     let mut lbl_h_score = Label::new("HIGH SCORE: 0 ", 50.0, 200.0, 30);
+    lbl_h_score.with_colors(WHITE, Some(BLACK));
+let mut s_score = 0;
+let mut h_score = h_score;
     let mut bullets: Vec<projectile> = Vec::new();
 
     let mut enemies: Vec<enemy> = Vec::new();
@@ -67,12 +81,15 @@ let mut s_score = 0;
 
     loop {
         clear_background(WHITE);
-        draw_grid(50.0, BLACK);
+        bg.draw();
 
-    //   if rows == 2 {
-    //       min_x -= 65.0;
-    //       max_x += 65.0;
-    //   } 
+if s_score >= h_score {
+    let s_score = h_score;
+}
+
+
+        lbl_h_score.set_text("SCORE: ".to_string() + &h_score.to_string());
+        lbl_h_score.draw();
 
         lbl_s_score.set_text("SCORE: ".to_string() + &s_score.to_string());
         lbl_s_score.draw();
@@ -157,6 +174,27 @@ let mut s_score = 0;
         }
 
 
+if enemies.is_empty() {
+            // enemies[enemy].set_x(0.0);
+            // enemies[enemy].set_y(0.0);
+
+    for row in 0..rows {
+        for column in 0..columns {
+            let enemy = enemy::new(
+                tm.get_preload("assets/evil.png").unwrap(),
+                space_x * column as f32,
+                space_y * row as f32,
+                75.0,
+                65.0,
+                true,
+                1.0,
+                1.0,
+            )
+            .await;
+            enemies.push(enemy);
+            }
+        }
+    }
 
         for enemy in 0..enemies.len() {
    if enemies[enemy].image.get_y() > max_y {
