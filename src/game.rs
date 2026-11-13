@@ -47,7 +47,7 @@ let mut s_score = 0;
                 tm.get_preload("assets/evil.png").unwrap(),
                 space_x * column as f32,
                 space_y * row as f32,
-                65.0,
+                75.0,
                 65.0,
                 true,
                 1.0,
@@ -113,12 +113,12 @@ let mut s_score = 0;
             let mut bullet: projectile = projectile::new(
                 player.image().get_x(),
                 player.image().get_y(),
-                40.0,
+                80.0,
                 50.0,
                 tm.get_preload("assets/bullet.png").unwrap(),
                 true,
                 1.0,
-                1.0,
+                2.0,
             )
             .await;
 
@@ -155,6 +155,15 @@ let mut s_score = 0;
                 }
             }
         }
+
+
+
+        for enemy in 0..enemies.len() {
+   if enemies[enemy].image.get_y() > max_y {
+    return ("lose".to_string(), tm, h_score);
+} 
+}
+
 
         if is_key_pressed(KeyCode::R) {
             return ("start".to_string(), tm, h_score);
