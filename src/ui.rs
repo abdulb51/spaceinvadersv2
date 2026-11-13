@@ -15,3 +15,4 @@ pub mod grid;
      pub mod text_button;
      pub mod grid;
      pub mod animated_image;
+     pub mod label;

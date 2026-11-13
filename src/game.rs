@@ -1,24 +1,23 @@
-
 use macroquad::input::KeyCode::X;
 use macroquad::prelude::*;
 
 use crate::custom::enemy::enemy;
 use crate::custom::player::Player;
 use crate::custom::projectile::projectile;
+use crate::ui::animated_image::AnimatedImage;
 use crate::ui::grid::draw_grid;
+use crate::ui::label::Label;
+use crate::ui::still_image::StillImage;
 use crate::ui::text_button::TextButton;
 use crate::utils::collision::check_collision;
 use crate::utils::preload_image::TextureManager;
-use crate::ui::animated_image::AnimatedImage;
-use crate::ui::still_image::StillImage;
 
-pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, TextureManager, i32, i32) {
+pub async fn run(tm: TextureManager, h_score: i32) -> (String, TextureManager, i32) {
     let btn_exit = TextButton::new(0.0, 0.0, 50.0, 50.0, "X", RED, BLACK, 50);
 
 
-
     let mut player = Player::new(
-        tm.get_preload("assets/ship.png").unwrap(),  //you ade asset not assets 
+        tm.get_preload("assets/ship.png").unwrap(), //you ade asset not assets
         290.0,
         800.0,
         100.0,
@@ -29,9 +28,10 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
         5.0,
     )
     .await;
-
-
-
+   
+   
+    let mut lbl_s_score = Label::new("SCORE: 0 ", 50.0, 100.0, 30);
+let mut s_score = 0;
 
     let mut bullets: Vec<projectile> = Vec::new();
 
@@ -41,7 +41,6 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
     let rows = 3;
     let space_x = 80.0;
     let space_y = 80.0;
-
     for row in 0..rows {
         for column in 0..columns {
             let enemy = enemy::new(
@@ -53,18 +52,14 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
                 true,
                 1.0,
                 1.0,
-                // 0.0,
-                // screen_height() / 1.25,
-                // 0.0,
-                // 750.0,
             )
             .await;
             enemies.push(enemy);
         }
     }
 
-    let min_x = 0.0;
-    let max_x = 750.0;
+    let mut min_x = 0.0;
+    let mut max_x = 850.0;
     let max_y = screen_height() / 1.25;
 
     let mut cooldown = 0.0;
@@ -73,30 +68,39 @@ pub async fn run(tm: TextureManager, s_score: i32, h_score: i32) -> (String, Tex
     loop {
         clear_background(WHITE);
         draw_grid(50.0, BLACK);
-let mut jump =false;
+
+    //   if rows == 2 {
+    //       min_x -= 65.0;
+    //       max_x += 65.0;
+    //   } 
+
+        lbl_s_score.set_text("SCORE: ".to_string() + &s_score.to_string());
+        lbl_s_score.draw();
+
+        let mut jump = false;
         for enemy in 0..enemies.len() {
-            if enemies[enemy].image().get_x() > max_x  {
-                jump=true;
-                move_dir*=-1.0;
+            if enemies[enemy].image().get_x() > max_x {
+                jump = true;
+                move_dir *= -1.0;
                 break;
-            } 
-if enemies[enemy].image().get_x() < min_x  {
-                jump=true;
-                
-                move_dir*=-1.0;
+            }
+            if enemies[enemy].image().get_x() < min_x {
+                jump = true;
+
+                move_dir *= -1.0;
                 break;
-            } 
+            }
         }
 
         for enemy in 0..enemies.len() {
-            let temp:f32 = enemies[enemy].image().get_x() + move_dir * enemies[enemy].get_speed();
+            let temp: f32 = enemies[enemy].image().get_x() + move_dir * enemies[enemy].get_speed();
             enemies[enemy].set_x(temp);
-            if jump{
-            let temp:f32 = enemies[enemy].image().get_y()+30.0;
+            if jump {
+                let temp: f32 = enemies[enemy].image().get_y() + 30.0;
 
                 enemies[enemy].set_y(temp);
             }
-            
+
             enemies[enemy].image().draw();
         }
 
@@ -142,25 +146,26 @@ if enemies[enemy].image().get_x() < min_x  {
         }
 
         for hit in 0..enemies.len() {
-            for blast in 0..bullets.len() {
+            for shoot in 0..bullets.len() {
                 let collision = check_collision(bullets[0].image(), enemies[hit].image(), 1); //Where 1 is the number of pixels to skip
                 if collision {
-                    bullets[blast].clear();
+                    bullets[shoot].clear();
                     enemies[hit].clear();
+                    s_score += 50;
                 }
             }
         }
 
         if is_key_pressed(KeyCode::R) {
-            return ("start".to_string(), tm, s_score, h_score);
+            return ("start".to_string(), tm, h_score);
         }
 
         if btn_exit.click() {
-            return ("main".to_string(), tm, s_score, h_score);
+            return ("main".to_string(), tm, h_score);
         }
 
         if enemies.len() == 0 {
-            return ("win".to_string(), tm, s_score, h_score);
+            return ("win".to_string(), tm, h_score);
         }
 
         player.image().draw();

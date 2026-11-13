@@ -39,28 +39,32 @@ async fn main() {
     
     let mut tm = TextureManager::new();
 
- let all_files = vec! [
-    "assets/ship.png",
-  "assets/shipboost.png",
-   "assets/evil.png",
-   "assets/evilb.png", 
-   "assets/bullet.png",
-    "assets/bg.gif"
-   ];
-   tm.preload_with_loading_screen(&all_files, None, None).await;
-
-
-//   tm.preload_with_loading_screen(&
-    // ["assets/ship.png",
+//  let all_files = vec! [
+//     "assets/ship.png",
 //   "assets/shipboost.png",
 //    "assets/evil.png",
 //    "assets/evilb.png", 
 //    "assets/bullet.png",
-//    "assets/bg.gif"
-//    ],
-    // None, None).await;
+//     // "assets/bg.gif"
+//    ];
+//    tm.preload_with_loading_screen(&all_files, None, None).await;
 
-    let mut s_score = 0;
+
+  tm.preload_with_loading_screen(&
+    ["assets/ship.png",
+  "assets/shipboost.png",
+   "assets/evil.png",
+   "assets/evilb.png", 
+   "assets/bullet.png",
+   "assets/bg.png",
+   "assets/start.png",
+   "assets/bg2.png",
+//    "assets/bg.gif"
+
+   ],
+    None, None).await;
+
+ 
     let mut h_score = 0;
 
     
@@ -71,11 +75,11 @@ async fn main() {
 
     loop {
         if get_time() - last_switch > 0.01 {
-           (current_screen, tm, s_score, h_score)  = match current_screen.as_str() {
-                "start" => start::run(tm, s_score, h_score).await,
-                "game" => game::run(tm, s_score, h_score).await,
-                "win" => win::run(tm, s_score, h_score).await,
-                "lose" => lose::run(tm, s_score, h_score).await,
+           (current_screen, tm, h_score)  = match current_screen.as_str() {
+                "start" => start::run(tm,  h_score).await,
+                "game" => game::run(tm,h_score).await,
+                "win" => win::run(tm,  h_score).await,
+                "lose" => lose::run(tm,  h_score).await,
                 _ => break,
             };
             last_switch = get_time();
